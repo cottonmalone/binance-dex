@@ -377,3 +377,85 @@ class Client(object):
 
         """
         return get(self.base_url, '/api/v1/orders/{}'.format(id))
+
+    def get_ticker(self, symbol=None):
+        """
+        Gets 24 hour price change statistics for a market pair symbol.
+
+        Args:
+            symbol (str): Market pair symbol, e.g. NNB-0AD_BNB.
+
+        Returns:
+            list(dict): The response data.
+
+        Raises:
+            BadRequest: If the input is malformed.
+            NotFound: If the resource could not be found.
+            UnknownError: For any unexpected error.
+
+        """
+        return get(self.base_url, '/api/v1/ticker/24hr', params={
+            'symbol': symbol
+        })
+
+    def get_trades(self,
+                   address=None,
+                   buyer_order_id=None,
+                   seller_order_id=None,
+                   quote_asset=None,
+                   symbol=None,
+                   height=None,
+                   side=Side.BOTH,
+                   offset=0,
+                   limit=500,
+                   total=False,
+                   start_time=None,
+                   end_time=None):
+        """
+        Gets a list of historical trades.
+
+        Warnings:
+            Default query window is latest 7 days.
+            The maximum start - end query window is 3 months.
+
+        Args:
+            address (str): The owner's address.
+            buyer_order_id (str): The buyer order's ID.
+            seller_order_id (str): The seller order's ID.
+            quote_asset (str): The quote asset.
+            symbol (str): Market pair symbol, e.g. NNB-0AD_BNB.
+            height (int): The block height.
+            side (Side): The order's side.
+            offset (int): The offset for the query.
+            limit (int): The limit of results.
+                Allowed limits: [5, 10, 20, 50, 100, 500, 1000]
+            total (bool): Whether to include the total number of returned
+                orders in the response. If set to False, the total will be
+                set to -1 in the response.
+            start_time (datetime): The start time for the interval.
+            end_time (datetime): The end time for the interval.
+
+        Returns:
+            dict: The response data.
+
+        Raises:
+            BadRequest: If the input is malformed.
+            NotFound: If the resource could not be found.
+            UnknownError: For any unexpected error.
+
+        """
+        return get(self.base_url, '/api/v1/trades', params={
+            'address': address,
+            'buyerOrderId': buyer_order_id,
+            'sellerOrderId': seller_order_id,
+            'quoteAsset': quote_asset,
+            'symbol': symbol,
+            'height': height,
+            'side': side.value,
+            'offset': offset,
+            'limit': limit,
+            'total': int(total),
+            # convert datetime to POSIX timestamp in milliseconds
+            'start': start_time.timestamp() * 1000 if start_time else None,
+            'end': end_time.timestamp() * 1000 if end_time else None
+        })

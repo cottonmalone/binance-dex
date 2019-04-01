@@ -301,3 +301,65 @@ def test_client_get_order(mocker):
 
     # check that mock functions were called as expected
     get.assert_called_with('url', '/api/v1/orders/id')
+
+
+def test_client_get_ticker(mocker):
+    """
+    Test that methods behaves as expected.
+    """
+    # mock all underlying functionality
+    get = mocker.patch('binance.api.client.get', return_value='foo')
+
+    # check that return value is correct
+    assert Client('url').get_ticker('symbol') == 'foo'
+
+    # check that mock functions were called as expected
+    get.assert_called_with('url', '/api/v1/ticker/24hr', params={
+        'symbol': 'symbol'
+    })
+
+
+@pytest.mark.parametrize('start_time,end_time,exp_start_time,exp_end_time', [
+    (None, None, None, None),
+    (POSIX_ORGIN, POSIX_ORGIN, 0, 0)
+])
+def test_client_get_trades(start_time,
+                           end_time,
+                           exp_start_time,
+                           exp_end_time,
+                           mocker):
+    """
+    Test that methods behaves as expected.
+    """
+    # mock all underlying functionality
+    get = mocker.patch('binance.api.client.get', return_value='foo')
+
+    # check that return value is correct
+    assert Client('url').get_trades('address',
+                                    'buyer_order_id',
+                                    'seller_order_id',
+                                    'quote_asset',
+                                    'symbol',
+                                    'height',
+                                    Side.BUY,
+                                    'offset',
+                                    'limit',
+                                    True,
+                                    start_time,
+                                    end_time) == 'foo'
+
+    # check that mock functions were called as expected
+    get.assert_called_with('url', '/api/v1/trades', params={
+        'address': 'address',
+        'buyerOrderId': 'buyer_order_id',
+        'sellerOrderId': 'seller_order_id',
+        'quoteAsset': 'quote_asset',
+        'symbol': 'symbol',
+        'height': 'height',
+        'side': 1,
+        'offset': 'offset',
+        'limit': 'limit',
+        'total': 1,
+        'start': exp_start_time,
+        'end': exp_end_time,
+    })
