@@ -1,4 +1,5 @@
 from .operations import get, post
+from .constants import *
 
 
 class Client(object):
@@ -266,6 +267,113 @@ class Client(object):
             'interval': interval.value,
             'limit': limit,
             # convert datetime to POSIX timestamp in milliseconds
-            'start_time': start_time.timestamp() * 1000 if start_time else None,
-            'end_time': end_time.timestamp() * 1000 if end_time else None
+            'startTime': start_time.timestamp() * 1000 if start_time else None,
+            'endTime': end_time.timestamp() * 1000 if end_time else None
         })
+
+    def get_closed_orders(self,
+                          address,
+                          symbol=None,
+                          status=OrderStatus.ALL,
+                          side=Side.BOTH,
+                          offset=0,
+                          limit=500,
+                          total=False,
+                          start_time=None,
+                          end_time=None):
+        """
+        Gets closed (filled and cancelled) orders for a given address.
+
+        Warnings:
+            Default query window is latest 7 days.
+            The maximum start - end query window is 3 months.
+
+        Args:
+            address (str): The owner's address.
+            symbol (str): Market pair symbol, e.g. NNB-0AD_BNB.
+            status (OrderStatus). The status of the order.
+            side (Side): The order's side.
+            offset (int): The offset for the query.
+            limit (int): The limit of results.
+                Allowed limits: [5, 10, 20, 50, 100, 500, 1000]
+            total (bool): Whether to include the total number of returned
+                orders in the response. If set to False, the total will be
+                set to -1 in the response.
+            start_time (datetime): The start time for the interval.
+            end_time (datetime): The end time for the interval.
+
+        Returns:
+            list(dict): The response data.
+
+        Raises:
+            BadRequest: If the input is malformed.
+            NotFound: If the resource could not be found.
+            UnknownError: For any unexpected error.
+
+        """
+        return get(self.base_url, '/api/v1/orders/closed', params={
+            'address': address,
+            'symbol': symbol,
+            'status': status.value,
+            'side': side.value,
+            'offset': offset,
+            'limit': limit,
+            'total': int(total),
+            # convert datetime to POSIX timestamp in milliseconds
+            'start': start_time.timestamp() * 1000 if start_time else None,
+            'end': end_time.timestamp() * 1000 if end_time else None
+        })
+
+    def get_open_orders(self,
+                        address,
+                        symbol=None,
+                        offset=0,
+                        limit=500,
+                        total=False):
+        """
+        Gets open orders for a given address.
+
+        Args:
+            address (str): The owner's address.
+            symbol (str): Market pair symbol, e.g. NNB-0AD_BNB.
+            offset (int): The offset for the query.
+            limit (int): The limit of results.
+                Allowed limits: [5, 10, 20, 50, 100, 500, 1000]
+            total (bool): Whether to include the total number of returned
+                orders in the response. If set to False, the total will be
+                set to -1 in the response.
+
+        Returns:
+            list(dict): The response data.
+
+        Raises:
+            BadRequest: If the input is malformed.
+            NotFound: If the resource could not be found.
+            UnknownError: For any unexpected error.
+
+        """
+        return get(self.base_url, '/api/v1/orders/open', params={
+            'address': address,
+            'symbol': symbol,
+            'offset': offset,
+            'limit': limit,
+            'total': int(total)
+        })
+
+    def get_order(self, id):
+        """
+        Gets metadata for an individual order by its ID.
+
+        Args:
+            id (str): The order's ID.
+
+        Returns:
+            dict: The response data.
+
+        Raises:
+            BadRequest: If the input is malformed.
+            NotFound: If the resource could not be found.
+            UnknownError: For any unexpected error.
+
+        """
+        return get(self.base_url, '/api/v1/orders/{}'.format(id))

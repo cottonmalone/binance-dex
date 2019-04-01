@@ -22,3 +22,21 @@ class Interval(Enum):
     INT_3_DAYS = "3d"
     INT_1_WEEK = "1w"
     INT_1_MONTH = "1M"
+
+
+class Side(Enum):
+    BOTH = None
+    BUY = 1
+    SELL = 2
+
+
+class OrderStatus(Enum):
+    ALL = None
+    ACK = "Ack"
+    PARTIAL_FILL = "PartialFill"
+    IOC_NO_FILL = "IocNoFill"
+    FULLY_FILL = "FullyFill"
+    CANCELED = "Canceled"
+    EXPIRED = "Expired"
+    FAILED_BLOCKING = "FailedBlocking"
+    FAILED_MATCHING = "FailedMatching"

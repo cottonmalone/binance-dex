@@ -220,6 +220,84 @@ def test_client_get_klines(start_time,
         'symbol': 'symbol',
         'interval': '1d',
         'limit': 'limit',
-        'start_time': exp_start_time,
-        'end_time': exp_end_time,
+        'startTime': exp_start_time,
+        'endTime': exp_end_time,
     })
+
+
+@pytest.mark.parametrize('start_time,end_time,exp_start_time,exp_end_time', [
+    (None, None, None, None),
+    (POSIX_ORGIN, POSIX_ORGIN, 0, 0)
+])
+def test_client_get_closed_orders(start_time,
+                                  end_time,
+                                  exp_start_time,
+                                  exp_end_time,
+                                  mocker):
+    """
+    Test that methods behaves as expected.
+    """
+    # mock all underlying functionality
+    get = mocker.patch('binance.api.client.get', return_value='foo')
+
+    # check that return value is correct
+    assert Client('url').get_closed_orders('address',
+                                           'symbol',
+                                           OrderStatus.ACK,
+                                           Side.BUY,
+                                           'offset',
+                                           'limit',
+                                           True,
+                                           start_time,
+                                           end_time) == 'foo'
+
+    # check that mock functions were called as expected
+    get.assert_called_with('url', '/api/v1/orders/closed', params={
+        'address': 'address',
+        'symbol': 'symbol',
+        'status': 'Ack',
+        'side': 1,
+        'offset': 'offset',
+        'limit': 'limit',
+        'total': 1,
+        'start': exp_start_time,
+        'end': exp_end_time,
+    })
+
+
+def test_client_get_open_orders(mocker):
+    """
+    Test that methods behaves as expected.
+    """
+    # mock all underlying functionality
+    get = mocker.patch('binance.api.client.get', return_value='foo')
+
+    # check that return value is correct
+    assert Client('url').get_open_orders('address',
+                                         'symbol',
+                                         'offset',
+                                         'limit',
+                                         True) == 'foo'
+
+    # check that mock functions were called as expected
+    get.assert_called_with('url', '/api/v1/orders/open', params={
+        'address': 'address',
+        'symbol': 'symbol',
+        'offset': 'offset',
+        'limit': 'limit',
+        'total': 1
+    })
+
+
+def test_client_get_order(mocker):
+    """
+    Test that methods behaves as expected.
+    """
+    # mock all underlying functionality
+    get = mocker.patch('binance.api.client.get', return_value='foo')
+
+    # check that return value is correct
+    assert Client('url').get_order('id') == 'foo'
+
+    # check that mock functions were called as expected
+    get.assert_called_with('url', '/api/v1/orders/id')
