@@ -1,4 +1,8 @@
+import pytest
+import datetime
 from binance.api import *
+
+POSIX_ORGIN = datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc)
 
 
 def test_client_ctor():
@@ -187,3 +191,35 @@ def test_client_broadcast(mocker):
                             headers={"Content-Type": "text/plain"},
                             params={'sync': 'sync'},
                             data='transaction')
+
+
+@pytest.mark.parametrize('start_time,end_time,exp_start_time,exp_end_time', [
+    (None, None, None, None),
+    (POSIX_ORGIN, POSIX_ORGIN, 0, 0)
+])
+def test_client_get_klines(start_time,
+                           end_time,
+                           exp_start_time,
+                           exp_end_time,
+                           mocker):
+    """
+    Test that methods behaves as expected.
+    """
+    # mock all underlying functionality
+    get = mocker.patch('binance.api.client.get', return_value='foo')
+
+    # check that return value is correct
+    assert Client('url').get_klines('symbol',
+                                    Interval.INT_1_DAY,
+                                    'limit',
+                                    start_time,
+                                    end_time) == 'foo'
+
+    # check that mock functions were called as expected
+    get.assert_called_with('url', '/api/v1/klines', params={
+        'symbol': 'symbol',
+        'interval': '1d',
+        'limit': 'limit',
+        'start_time': exp_start_time,
+        'end_time': exp_end_time,
+    })

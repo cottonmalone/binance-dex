@@ -228,3 +228,44 @@ class Client(object):
                     headers={"Content-Type": "text/plain"},
                     params={'sync': sync},
                     data=transaction)
+
+    def get_klines(self,
+                   symbol,
+                   interval,
+                   limit=500,
+                   start_time=None,
+                   end_time=None):
+        """
+        Gets candlestick/kline bars for a symbol.
+
+        Bars are uniquely identified by their open time.
+
+        If the time window is larger than limits, only the first n klines
+        will return. In this case, please either shrink the window or
+        increase the limit to get proper amount of klines.
+
+        Args:
+            symbol (str): Market pair symbol, e.g. NNB-0AD_BNB.
+            interval (Interval). The interval for the chart.
+            limit (int): The limit of results.
+                Allowed limits: [5, 10, 20, 50, 100, 500, 1000]
+            start_time (datetime): The start time for the interval.
+            end_time (datetime): The end time for the interval.
+
+        Returns:
+            list(dict): The response data.
+
+        Raises:
+            BadRequest: If the input is malformed.
+            NotFound: If the resource could not be found.
+            UnknownError: For any unexpected error.
+
+        """
+        return get(self.base_url, '/api/v1/klines', params={
+            'symbol': symbol,
+            'interval': interval.value,
+            'limit': limit,
+            # convert datetime to POSIX timestamp in milliseconds
+            'start_time': start_time.timestamp() * 1000 if start_time else None,
+            'end_time': end_time.timestamp() * 1000 if end_time else None
+        })
