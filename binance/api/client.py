@@ -73,7 +73,7 @@ class Client(object):
         """
         Gets account metadata for an address.
 
-        Parameters:
+        Args:
             address (str): The account's address.
 
         Returns:
@@ -91,7 +91,7 @@ class Client(object):
         """
         Gets an account sequence for an address.
 
-        Parameters:
+        Args:
             address (str): The account's address.
 
         Returns:
@@ -109,7 +109,7 @@ class Client(object):
         """
         Gets transaction metadata by transaction ID.
 
-        Parameters:
+        Args:
             hash (str): The transaction's ID.
 
         Returns:
@@ -122,3 +122,83 @@ class Client(object):
 
         """
         return get(self.base_url, '/api/v1/tx/{}?format=json'.format(hash))
+
+    def get_tokens(self, offset=0, limit=500):
+        """
+        Gets a list of tokens that have been issued.
+
+        Args:
+            offset (int): The offset for the query.
+            limit (int): The limit for the query.
+
+        Returns:
+            list(dict): The response data.
+
+        Raises:
+            BadRequest: If the input is malformed.
+            NotFound: If the resource could not be found.
+            UnknownError: For any unexpected error.
+
+        """
+        return get(self.base_url, '/api/v1/tokens', params={
+            'offset': offset,
+            'limit': limit
+        })
+
+    def get_markets(self, offset=0, limit=500):
+        """
+        Gets the list of market pairs that have been listed.
+
+        Args:
+            offset (int): The offset for the query.
+            limit (int): The limit for the query.
+
+        Returns:
+            list(dict): The response data.
+
+        Raises:
+            BadRequest: If the input is malformed.
+            NotFound: If the resource could not be found.
+            UnknownError: For any unexpected error.
+
+        """
+        return get(self.base_url, '/api/v1/markets', params={
+            'offset': offset,
+            'limit': limit
+        })
+
+    def get_fees(self):
+        """
+        Gets the current trading fees settings.
+
+        Returns:
+            list(dict): The response data.
+
+        Raises:
+            UnknownError: For any unexpected error.
+
+        """
+        return get(self.base_url, '/api/v1/fees')
+
+    def get_depth(self, symbol, limit=500):
+        """
+        Gets the order book depth data for a given pair symbol.
+
+        Args:
+            symbol (str): Market pair symbol, e.g. NNB-0AD_BNB.
+            limit (int): The limit of results.
+                Allowed limits: [5, 10, 20, 50, 100, 500, 1000]
+
+        Returns:
+            list(dict): The response data.
+
+        Raises:
+            BadRequest: If the input is malformed.
+            NotFound: If the resource could not be found.
+            UnknownError: For any unexpected error.
+
+        """
+        return get(self.base_url, '/api/v1/depth', params={
+            'symbol': symbol,
+            'limit': limit
+        })

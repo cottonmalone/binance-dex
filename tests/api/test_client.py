@@ -104,3 +104,67 @@ def test_client_get_transaction(mocker):
 
     # check that mock functions were called as expected
     get.assert_called_with('url', '/api/v1/tx/id?format=json')
+
+
+def test_client_get_tokens(mocker):
+    """
+    Test that methods behaves as expected.
+    """
+    # mock all underlying functionality
+    get = mocker.patch('binance.api.client.get', return_value='foo')
+
+    # check that return value is correct
+    assert Client('url').get_tokens('offset', 'limit') == 'foo'
+
+    # check that mock functions were called as expected
+    get.assert_called_with('url', '/api/v1/tokens', params={
+        'offset': 'offset',
+        'limit': 'limit'
+    })
+
+
+def test_client_get_markets(mocker):
+    """
+    Test that methods behaves as expected.
+    """
+    # mock all underlying functionality
+    get = mocker.patch('binance.api.client.get', return_value='foo')
+
+    # check that return value is correct
+    assert Client('url').get_markets('offset', 'limit') == 'foo'
+
+    # check that mock functions were called as expected
+    get.assert_called_with('url', '/api/v1/markets', params={
+        'offset': 'offset',
+        'limit': 'limit'
+    })
+
+
+def test_client_get_fees(mocker):
+    """
+    Test that methods behaves as expected.
+    """
+    # mock all underlying functionality
+    get = mocker.patch('binance.api.client.get', return_value='foo')
+
+    # check that return value is correct
+    assert Client('url').get_fees() == 'foo'
+
+    # check that mock functions were called as expected
+    get.assert_called_with('url', '/api/v1/fees')
+
+def test_client_get_depth(mocker):
+    """
+    Test that methods behaves as expected.
+    """
+    # mock all underlying functionality
+    get = mocker.patch('binance.api.client.get', return_value='foo')
+
+    # check that return value is correct
+    assert Client('url').get_depth('symbol', 'limit') == 'foo'
+
+    # check that mock functions were called as expected
+    get.assert_called_with('url', '/api/v1/depth', params={
+        'symbol': 'symbol',
+        'limit': 'limit'
+    })
