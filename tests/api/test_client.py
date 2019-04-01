@@ -153,6 +153,7 @@ def test_client_get_fees(mocker):
     # check that mock functions were called as expected
     get.assert_called_with('url', '/api/v1/fees')
 
+
 def test_client_get_depth(mocker):
     """
     Test that methods behaves as expected.
@@ -168,3 +169,21 @@ def test_client_get_depth(mocker):
         'symbol': 'symbol',
         'limit': 'limit'
     })
+
+
+def test_client_broadcast(mocker):
+    """
+    Test that methods behaves as expected.
+    """
+    # mock all underlying functionality
+    post = mocker.patch('binance.api.client.post', return_value='foo')
+
+    # check that return value is correct
+    assert Client('url').broadcast('transaction', 'sync') == 'foo'
+
+    # check that mock functions were called as expected
+    post.assert_called_with('url',
+                            '/api/v1/broadcast',
+                            headers={"Content-Type": "text/plain"},
+                            params={'sync': 'sync'},
+                            data='transaction')

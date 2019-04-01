@@ -202,3 +202,29 @@ class Client(object):
             'symbol': symbol,
             'limit': limit
         })
+
+    def broadcast(self, transaction, sync=False):
+        """
+        Broadcasts a signed transaction.
+
+        A single transaction must be sent hex-encoded in byte form.
+
+        Args:
+            transaction (bytes): Raw content of transaction in hex-encoded form.
+            sync (bool): Whether the function should wait for DeliverTx
+                confirmation.
+
+        Returns:
+            list(dict): The response data.
+
+        Raises:
+            BadRequest: If the input is malformed.
+            NotFound: If the resource could not be found.
+            UnknownError: For any unexpected error.
+
+        """
+        return post(self.base_url,
+                    '/api/v1/broadcast',
+                    headers={"Content-Type": "text/plain"},
+                    params={'sync': sync},
+                    data=transaction)
