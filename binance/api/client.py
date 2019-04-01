@@ -68,3 +68,57 @@ class Client(object):
 
         """
         return get(self.base_url, '/api/v1/peers')
+
+    def get_account(self, address):
+        """
+        Gets account metadata for an address.
+
+        Parameters:
+            address (str): The account's address.
+
+        Returns:
+            dict: The response data.
+
+        Raises:
+            BadRequest: If the input is malformed.
+            NotFound: If the resource could not be found.
+            UnknownError: For any unexpected error.
+
+        """
+        return get(self.base_url, '/api/v1/account/{}'.format(address))
+
+    def get_account_sequence(self, address):
+        """
+        Gets an account sequence for an address.
+
+        Parameters:
+            address (str): The account's address.
+
+        Returns:
+            dict: The response data.
+
+        Raises:
+            BadRequest: If the input is malformed.
+            NotFound: If the resource could not be found.
+            UnknownError: For any unexpected error.
+
+        """
+        return get(self.base_url, '/api/v1/account/{}/sequence'.format(address))
+
+    def get_transaction(self, hash):
+        """
+        Gets transaction metadata by transaction ID.
+
+        Parameters:
+            hash (str): The transaction's ID.
+
+        Returns:
+            dict: The response data.
+
+        Raises:
+            BadRequest: If the input is malformed.
+            NotFound: If the resource could not be found.
+            UnknownError: For any unexpected error.
+
+        """
+        return get(self.base_url, '/api/v1/tx/{}?format=json'.format(hash))
