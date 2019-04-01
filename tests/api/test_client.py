@@ -363,3 +363,43 @@ def test_client_get_trades(start_time,
         'start': exp_start_time,
         'end': exp_end_time,
     })
+
+
+@pytest.mark.parametrize('start_time,end_time,exp_start_time,exp_end_time', [
+    (None, None, None, None),
+    (POSIX_ORGIN, POSIX_ORGIN, 0, 0)
+])
+def test_client_get_transactions(start_time,
+                                 end_time,
+                                 exp_start_time,
+                                 exp_end_time,
+                                 mocker):
+    """
+    Test that methods behaves as expected.
+    """
+    # mock all underlying functionality
+    get = mocker.patch('binance.api.client.get', return_value='foo')
+
+    # check that return value is correct
+    assert Client('url').get_transactions('address',
+                                          'height',
+                                          'tx_asset',
+                                          TransactionType.BURN_TOKEN,
+                                          TransactionSide.RECEIVE,
+                                          'offset',
+                                          'limit',
+                                          start_time,
+                                          end_time) == 'foo'
+
+    # check that mock functions were called as expected
+    get.assert_called_with('url', '/api/v1/transactions', params={
+        'address': 'address',
+        'blockHeight': 'height',
+        'txAsset': 'tx_asset',
+        'txType': 'BURN_TOKEN',
+        'side': 'RECEIVE',
+        'offset': 'offset',
+        'limit': 'limit',
+        'startTime': exp_start_time,
+        'endTime': exp_end_time,
+    })

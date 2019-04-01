@@ -275,7 +275,7 @@ class Client(object):
                           address,
                           symbol=None,
                           status=OrderStatus.ALL,
-                          side=Side.BOTH,
+                          side=Side.ALL,
                           offset=0,
                           limit=500,
                           total=False,
@@ -405,7 +405,7 @@ class Client(object):
                    quote_asset=None,
                    symbol=None,
                    height=None,
-                   side=Side.BOTH,
+                   side=Side.ALL,
                    offset=0,
                    limit=500,
                    total=False,
@@ -458,4 +458,55 @@ class Client(object):
             # convert datetime to POSIX timestamp in milliseconds
             'start': start_time.timestamp() * 1000 if start_time else None,
             'end': end_time.timestamp() * 1000 if end_time else None
+        })
+
+    def get_transactions(self,
+                         address,
+                         height=None,
+                         tx_asset=None,
+                         tx_type=TransactionType.ALL,
+                         tx_side=TransactionSide.ALL,
+                         offset=0,
+                         limit=500,
+                         start_time=None,
+                         end_time=None):
+        """
+        Gets a list of historical trades.
+
+        Warnings:
+            Default query window is latest 7 days.
+            The maximum start - end query window is 3 months.
+
+        Args:
+            address (str): The owner's address.
+            height (int): The block height.
+            tx_asset (str): The TX asset.
+            tx_type (TransactionType): The transaction's type.
+            tx_side (TransactionSide): The transaction's side.
+            offset (int): The offset for the query.
+            limit (int): The limit of results.
+                Allowed limits: [5, 10, 20, 50, 100, 500, 1000]
+            start_time (datetime): The start time for the interval.
+            end_time (datetime): The end time for the interval.
+
+        Returns:
+            dict: The response data.
+
+        Raises:
+            BadRequest: If the input is malformed.
+            NotFound: If the resource could not be found.
+            UnknownError: For any unexpected error.
+
+        """
+        return get(self.base_url, '/api/v1/transactions', params={
+            'address': address,
+            'blockHeight': height,
+            'txAsset': tx_asset,
+            'txType': tx_type.value,
+            'side': tx_side.value,
+            'offset': offset,
+            'limit': limit,
+            # convert datetime to POSIX timestamp in milliseconds
+            'startTime': start_time.timestamp() * 1000 if start_time else None,
+            'endTime': end_time.timestamp() * 1000 if end_time else None
         })

@@ -25,7 +25,7 @@ class Interval(Enum):
 
 
 class Side(Enum):
-    BOTH = None
+    ALL = None
     BUY = 1
     SELL = 2
 
@@ -40,3 +40,28 @@ class OrderStatus(Enum):
     EXPIRED = "Expired"
     FAILED_BLOCKING = "FailedBlocking"
     FAILED_MATCHING = "FailedMatching"
+
+
+class TransactionSide(Enum):
+    ALL = None
+    RECEIVE = "RECEIVE"
+    SEND = "SEND"
+
+
+class TransactionType(Enum):
+    ALL = None
+    NEW_ORDER = "NEW_ORDER"
+    ISSUE_TOKEN = "ISSUE_TOKEN"
+    BURN_TOKEN = "BURN_TOKEN"
+    LIST_TOKEN = "LIST_TOKEN"
+    CANCEL_ORDER = "CANCEL_ORDER"
+    FREEZE_TOKEN = "FREEZE_TOKEN"
+    UN_FREEZE_TOKEN = "UN_FREEZE_TOKEN"
+    TRANSFER = "TRANSFER"
+    PROPOSAL = "PROPOSAL"
+    VOTE = "VOTE"
+    MINT = "MINT"
+    DEPOSIT = "DEPOSIT"
+
+
+
