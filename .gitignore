@@ -105,3 +105,9 @@ venv.bak/
 
 # PyCharm
 .idea
+
+# Sublime
+*.sublime-*
+
+# Mac OS X
+*.DS_Store
