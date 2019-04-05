@@ -3,3 +3,5 @@ pytest==4.4.0
 pytest-mock==1.10.3
 requests==2.21.0
 urllib3==1.24.1
+bitcoin==1.1.42
+ecdsa==0.13
