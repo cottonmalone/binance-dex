@@ -163,6 +163,20 @@ def get_address_from_private_key(private_key, prefix="tbnb"):
     )
 
 
+def get_sender_address_in_bytes(address):
+    """
+    Get sender address in bytes form.
+
+    Args:
+        address (str): The address.
+
+    Returns:
+        bytes: The address in bytes form.
+
+    """
+    return binascii.unhexlify(get_public_key_from_address(address))
+
+
 def generate_signature_for_message(private_key, message):
     """
     Generate signature for message.

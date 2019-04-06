@@ -1,12 +1,14 @@
-from binance.transaction import *
 import binascii
+from binance.transaction import *
+
+from binance.crypto import *
 
 
 def test_new_order_message():
     """
     Test function behaves as expected.
     """
-    # test parameters
+    # expected values from Java SDK (sanity check)
     sender = "b6561dcc104130059a7c08f48c64610c1f6f9064"
     public_key = "eb5ae9872103baf53d1424f8ea83d03a82f6d1" \
                  "57b5401c4ea57ffb8317872e15a19fc9b7ad7b"
@@ -24,19 +26,25 @@ def test_new_order_message():
                           "4e761e22a7a3bc311a780e7d9fdd521e2f7edec25308c5b" \
                           "ac6aa1c0a311801200a"
 
-    # create transcation
+    # create transaction
     transaction = Transaction()
+
+    message = NewOrderMessage(
+        sender="bnc1hgm0p7khfk85zpz5v0j8wnej3a90w7098fpxyh",
+        id="B6561DCC104130059A7C08F48C64610C1F6F9064-11",
+        symbol="BTC-5C4_BNB",
+        order_type=2,
+        side=1,
+        price=100000000,
+        quantity=1200000000,
+        time_in_force=1
+    )
+    # override sender with correct one
+    message.proto.sender = binascii.unhexlify(sender)
 
     # add new order message
     transaction.add_message(
-        NewOrderMessage(sender=binascii.unhexlify(sender),
-                        id="B6561DCC104130059A7C08F48C64610C1F6F9064-11",
-                        symbol="BTC-5C4_BNB",
-                        order_type=2,
-                        side=1,
-                        price=100000000,
-                        quantity=1200000000,
-                        time_in_force=1)
+        message
     )
 
     # sign message

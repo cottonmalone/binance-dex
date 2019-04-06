@@ -55,7 +55,17 @@ def test_get_public_key_from_address():
     Test function behaves as expected.
     """
     assert get_public_key_from_address(
-        "tbnb1hgm0p7khfk85zpz5v0j8wnej3a90w709zzlffd") == "ba36f0fad74d8f41045463e4774f328f4af779e5"
+        "tbnb1hgm0p7khfk85zpz5v0j8wnej3a90w709zzlffd"
+    ) == "ba36f0fad74d8f41045463e4774f328f4af779e5"
+
+
+def test_get_sender_address_in_bytes():
+    """
+    Test function behaves as expected.
+    """
+    assert get_sender_address_in_bytes(
+        "tbnb1hgm0p7khfk85zpz5v0j8wnej3a90w709zzlffd"
+    ) == binascii.unhexlify("ba36f0fad74d8f41045463e4774f328f4af779e5")
 
 
 def test_generate_signature_for_message():
@@ -94,3 +104,12 @@ def test_verify_signature_for_message():
 
     # verify that bogus signature is rejected
     assert not verify_signature_for_message(public_key, signature, b'foo')
+
+
+def test_foo():
+    public_key = get_public_key_from_private_key(
+        "95949f757db1f57ca94a5dff23314accbe7abee89597bf6a3c7382c84d7eb832")
+
+    public_key = "eb5ae98721" + public_key
+
+    assert public_key == "eb5ae98721026a35920088d98c3888ca68c53dfc93f4564602606cbb87f0fe5ee533db38e502"

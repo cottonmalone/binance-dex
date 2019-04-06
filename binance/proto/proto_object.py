@@ -1,3 +1,5 @@
+from google.protobuf.json_format import MessageToDict as msg_to_dict
+from google.protobuf.descriptor import FieldDescriptor
 
 
 class ProtoObject(object):
@@ -59,5 +61,15 @@ class ProtoObject(object):
 
         return buffer
 
+    def to_dict(self):
 
+        data = msg_to_dict(self.proto, preserving_proto_field_name=True)
 
+        fields = self.proto.ListFields()
+
+        for field, value in fields:
+            if field.cpp_type in [FieldDescriptor.CPPTYPE_INT64,
+                                  FieldDescriptor.CPPTYPE_UINT64]:
+                data[field.name] = int(data[field.name])
+
+        return data
