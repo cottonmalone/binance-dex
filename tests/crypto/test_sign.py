@@ -21,9 +21,9 @@ def test_get_json_bytes_for_sign_data():
                    b"223a2231227d"
     private_key = "90335b9d2153ad1a9799a3ccc070bd64" \
                   "b4164e9642ee1dd48053c33f9a3a05e9"
-    other_signature = b"08bf9c556c1f632e42c4eca3efd72971517a07b07853af3d8f858" \
-                      b"1ee58209a9771763286cf2859b62c6e3f139ac15c3d46eafd7b1d" \
-                      b"71763ac45a4b053b23a347"
+    expected_signature = b"08bf9c556c1f632e42c4eca3efd72971517a07b07853af3d8" \
+                         b"f8581ee58209a9771763286cf2859b62c6e3f139ac15c3d46" \
+                         b"eafd7b1d71763ac45a4b053b23a347"
 
     # create new order message
     msg = NewOrderMessage(
@@ -54,13 +54,5 @@ def test_get_json_bytes_for_sign_data():
     # get signature
     signature = generate_signature_for_message(private_key, encoded_message)
 
-    # verify that both the signature and SKD signature verify with the message
-    public_key = get_public_key_from_private_key(private_key)
-
-    assert verify_signature_for_message(public_key,
-                                        signature,
-                                        encoded_message)
-
-    assert verify_signature_for_message(public_key,
-                                        binascii.unhexlify(other_signature),
-                                        encoded_message)
+    # verify that signature matches expected
+    assert binascii.hexlify(signature) == expected_signature

@@ -83,7 +83,7 @@ def test_generate_signature_for_message():
     public_key = get_public_key_from_private_key(PRIVATE_KEY)
 
     # verify that signature is correct
-    assert verify_signature_for_message(public_key, signature, message_data)
+    assert binascii.hexlify(signature).decode() == SIGNATURE
 
 
 def test_verify_signature_for_message():
@@ -104,12 +104,3 @@ def test_verify_signature_for_message():
 
     # verify that bogus signature is rejected
     assert not verify_signature_for_message(public_key, signature, b'foo')
-
-
-def test_foo():
-    public_key = get_public_key_from_private_key(
-        "95949f757db1f57ca94a5dff23314accbe7abee89597bf6a3c7382c84d7eb832")
-
-    public_key = "eb5ae98721" + public_key
-
-    assert public_key == "eb5ae98721026a35920088d98c3888ca68c53dfc93f4564602606cbb87f0fe5ee533db38e502"

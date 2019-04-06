@@ -2,8 +2,8 @@ import binascii
 import bitcoin
 import ecdsa
 import hashlib
+import cryptos
 from binance.utils import segwit_addr
-
 
 def get_private_key_from_hex(hex):
     """
@@ -193,7 +193,7 @@ def generate_signature_for_message(private_key, message):
     key = get_private_key_from_hex(private_key)
 
     # sign message using sha256
-    return key.sign(message, hashfunc=hashlib.sha256)
+    return key.sign_deterministic(message, hashfunc=hashlib.sha256)
 
 
 def verify_signature_for_message(public_key, signature, message):
