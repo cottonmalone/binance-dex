@@ -1,4 +1,5 @@
 from binance.crypto import *
+from binance.message import *
 from binance.transaction import *
 
 

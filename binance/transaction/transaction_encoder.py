@@ -1,6 +1,6 @@
 import binascii
 import binance.crypto
-from .new_order_message import *
+import binance.message
 from .signature import *
 from .transaction import *
 
@@ -80,7 +80,7 @@ class TransactionEncoder(object):
         # create order ID from compressed address and sequence ID
         order_id = address.upper() + '-' + str(self.wallet.sequence + 1)
 
-        return NewOrderMessage(
+        return binance.message.NewOrderMessage(
             id=order_id,
             sender=self.wallet.address,
             symbol=symbol,

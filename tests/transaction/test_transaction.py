@@ -1,7 +1,7 @@
 import binascii
-from binance.transaction import *
-
 from binance.crypto import *
+from binance.message import *
+from binance.transaction import *
 
 
 def test_new_order_message():
