@@ -38,7 +38,7 @@ class NewOrderMessage(ProtoObject):
         )
         self.proto.id = id
         self.sender_address = sender
-        self.proto.sender = binance.crypto.get_sender_address_in_bytes(
+        self.proto.sender = binance.crypto.get_address_in_bytes(
             sender)
         self.proto.symbol = symbol
         self.proto.ordertype = order_type.value

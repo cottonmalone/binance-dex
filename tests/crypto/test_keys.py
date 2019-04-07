@@ -59,13 +59,12 @@ def test_get_public_key_from_address():
     ) == "ba36f0fad74d8f41045463e4774f328f4af779e5"
 
 
-def test_get_sender_address_in_bytes():
+def test_get_address_in_bytes():
     """
     Test function behaves as expected.
     """
-    assert get_sender_address_in_bytes(
-        "tbnb1hgm0p7khfk85zpz5v0j8wnej3a90w709zzlffd"
-    ) == binascii.unhexlify("ba36f0fad74d8f41045463e4774f328f4af779e5")
+    assert get_address_in_bytes("tbnb1hgm0p7khfk85zpz5v0j8wnej3a90w709zzlffd") \
+           == binascii.unhexlify("ba36f0fad74d8f41045463e4774f328f4af779e5")
 
 
 @pytest.mark.parametrize('private_key', [

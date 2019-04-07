@@ -25,7 +25,7 @@ class TokenUnfreezeMessage(ProtoObject):
             prepend_length=False
         )
         self.sender_address = sender
-        setattr(self.proto, "from", binance.crypto.get_sender_address_in_bytes(
+        setattr(self.proto, "from", binance.crypto.get_address_in_bytes(
             sender))
         self.proto.symbol = symbol
         self.proto.amount = amount

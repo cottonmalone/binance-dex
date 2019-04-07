@@ -164,9 +164,9 @@ def get_address_from_private_key(private_key, prefix="tbnb"):
     )
 
 
-def get_sender_address_in_bytes(address):
+def get_address_in_bytes(address):
     """
-    Get sender address in bytes form.
+    Get address in bytes form.
 
     Args:
         address (str): The address.

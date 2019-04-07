@@ -77,7 +77,9 @@ class TransactionEncoder(object):
 
         """
         # get compressed address
-        address = binascii.hexlify(self.wallet.address_in_bytes).decode()
+        address = binascii.hexlify(
+            binance.crypto.get_address_in_bytes(self.wallet.address)
+        ).decode()
 
         # create order ID from compressed address and sequence ID
         order_id = address.upper() + '-' + str(self.wallet.sequence + 1)

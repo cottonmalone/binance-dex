@@ -25,7 +25,7 @@ class VoteMessage(ProtoObject):
             prepend_length=False
         )
         self.sender_address = voter
-        self.proto.voter = binance.crypto.get_sender_address_in_bytes(
+        self.proto.voter = binance.crypto.get_address_in_bytes(
             voter)
         self.proto.proposal_id = proposal_id
         self.proto.option = option_set.value

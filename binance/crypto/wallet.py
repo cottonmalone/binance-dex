@@ -14,7 +14,6 @@ class Wallet(object):
 
         self.address = get_address_from_private_key(private_key,
                                                     environment.hrp)
-        self.address_in_bytes = get_sender_address_in_bytes(self.address)
 
         self.account_number = None
         self.sequence = None

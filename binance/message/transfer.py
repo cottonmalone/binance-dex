@@ -35,11 +35,11 @@ class TransferMessage(ProtoObject):
         token.amount = amount
 
         input = self.proto.inputs.add()
-        input.address = binance.crypto.get_sender_address_in_bytes(sender_address)
+        input.address = binance.crypto.get_address_in_bytes(sender_address)
         input.coins.extend([token])
 
         output = self.proto.outputs.add()
-        output.address = binance.crypto.get_sender_address_in_bytes(recipient_address)
+        output.address = binance.crypto.get_address_in_bytes(recipient_address)
         output.coins.extend([token])
 
     def to_dict(self):
