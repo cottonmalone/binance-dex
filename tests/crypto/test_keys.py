@@ -68,7 +68,11 @@ def test_get_sender_address_in_bytes():
     ) == binascii.unhexlify("ba36f0fad74d8f41045463e4774f328f4af779e5")
 
 
-def test_generate_signature_for_message():
+@pytest.mark.parametrize('private_key', [
+    PRIVATE_KEY,
+    get_private_key_from_hex(PRIVATE_KEY)
+])
+def test_generate_signature_for_message(private_key):
     """
     Test function behaves as expected.
     """
@@ -76,17 +80,18 @@ def test_generate_signature_for_message():
     message_data = binascii.unhexlify(MSG)
 
     # generate signature
-    signature = generate_signature_for_message(PRIVATE_KEY,
+    signature = generate_signature_for_message(private_key,
                                                message_data)
-
-    # get public key from private key
-    public_key = get_public_key_from_private_key(PRIVATE_KEY)
 
     # verify that signature is correct
     assert binascii.hexlify(signature).decode() == SIGNATURE
 
 
-def test_verify_signature_for_message():
+@pytest.mark.parametrize('public_key', [
+    get_public_key_from_private_key(PRIVATE_KEY),
+    get_private_key_from_hex(PRIVATE_KEY).get_verifying_key()
+])
+def test_verify_signature_for_message(public_key):
     """
     Test function behaves as expected.
     """
@@ -95,9 +100,6 @@ def test_verify_signature_for_message():
 
     # generate signature
     signature = binascii.unhexlify(SIGNATURE)
-
-    # get public key from private key
-    public_key = get_public_key_from_private_key(PRIVATE_KEY)
 
     # verify that signature is correct
     assert verify_signature_for_message(public_key, signature, message_data)

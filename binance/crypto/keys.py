@@ -5,6 +5,7 @@ import hashlib
 import cryptos
 from binance.utils import segwit_addr
 
+
 def get_private_key_from_hex(hex):
     """
     Get private key from hexadecimal representation.
@@ -182,18 +183,19 @@ def generate_signature_for_message(private_key, message):
     Generate signature for message.
 
     Args:
-        private_key (str): The private key in hexadecimal form.
+        private_key (str, ecdsa.SigningKey): The private key.
         message (bytes): The message to sign in bytes.
 
     Returns:
         bytes: The signed message.
 
     """
-    # get private key
-    key = get_private_key_from_hex(private_key)
+    # get private key from hex if not key object
+    if not isinstance(private_key, ecdsa.SigningKey):
+        private_key = get_private_key_from_hex(private_key)
 
     # sign message using sha256
-    return key.sign_deterministic(message, hashfunc=hashlib.sha256)
+    return private_key.sign_deterministic(message, hashfunc=hashlib.sha256)
 
 
 def verify_signature_for_message(public_key, signature, message):
@@ -201,7 +203,7 @@ def verify_signature_for_message(public_key, signature, message):
     Verify signature for message.
 
     Args:
-        public_key (str): The public key in hexadecimal form.
+        public_key (str, ecdsa.VerifyingKey): The public key.
         signature (bytes): The message to sign in bytes.
         message (bytes): The message to sign in bytes.
 
@@ -209,11 +211,13 @@ def verify_signature_for_message(public_key, signature, message):
         bool: Whether the signature was verified.
 
     """
-    key = get_public_key_from_hex(public_key)
+    # get public key from hex if not key object
+    if not isinstance(public_key, ecdsa.VerifyingKey):
+        public_key = get_public_key_from_hex(public_key)
 
     # this function is annoying as it will return True if verified but
     # an exception if not, not very good application of good design principles
     try:
-        return key.verify(signature, message, hashfunc=hashlib.sha256)
+        return public_key.verify(signature, message, hashfunc=hashlib.sha256)
     except ecdsa.BadSignatureError:
         return False

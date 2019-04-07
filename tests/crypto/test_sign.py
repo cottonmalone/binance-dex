@@ -41,7 +41,7 @@ def test_get_json_bytes_for_sign_data():
                          account_number='12',
                          sequence='35',
                          memo='',
-                         msgs=get_data_from_messages([msg]),
+                         msgs=[msg.to_dict()],
                          source='1',
                          data=None)
 

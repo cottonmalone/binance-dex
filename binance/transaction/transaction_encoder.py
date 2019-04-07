@@ -1,5 +1,8 @@
 import binascii
+import binance.crypto
 from .new_order_message import *
+from .signature import *
+from .transaction import *
 
 
 class TransactionEncoder(object):
@@ -10,6 +13,43 @@ class TransactionEncoder(object):
         self.source = source
         self.data = data
 
+    def sign(self, message):
+        """
+        Sign message.
+
+        Args:
+            message (Message): The message to sign.
+
+        Returns:
+            bytes: The message signature.
+
+        """
+        # get sign data with message
+        sign_data = binance.crypto.get_sign_data(wallet=self.wallet,
+                                                 msgs=[message],
+                                                 memo=self.memo,
+                                                 source=self.source,
+                                                 data=self.data)
+
+        # sign encoded JSON to bytes
+        return binance.crypto.generate_signature_for_message(
+            self.wallet.private_key,
+            binance.crypto.get_json_bytes_for_sign_data(sign_data)
+        )
+
+    def create_transaction(self, message, signature):
+        transaction = Transaction(memo=self.memo,
+                                  source=self.source,
+                                  data=b'' if self.data is None else self.data)
+
+        transaction.add_message(message)
+        transaction.add_signature(Signature(public_key=self.wallet.public_key,
+                                            signature=signature,
+                                            account_number=self.wallet.account_number,
+                                            sequence=self.wallet.sequence))
+
+        return transaction
+
     def create_new_order_message(self,
                                  symbol,
                                  order_type,
@@ -18,6 +58,7 @@ class TransactionEncoder(object):
                                  quantity,
                                  time_in_force):
         """
+        Create New Order Message from parameters.
 
         Args:
             symbol (str): Symbol for trading pair in full name of the tokens
