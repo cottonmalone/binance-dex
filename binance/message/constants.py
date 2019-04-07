@@ -19,3 +19,10 @@ class TimeInForce(Enum):
     """
     Immediate Or Cancel
     """
+
+
+class VoteOption(Enum):
+    Yes = 1
+    Abstain = 2
+    No = 3
+    NoWithVeto = 4

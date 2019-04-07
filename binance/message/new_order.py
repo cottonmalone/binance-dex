@@ -4,7 +4,7 @@ from binance.proto import ProtoObject, NewOrder
 
 class NewOrderMessage(ProtoObject):
     """
-    Object that represents a new order.
+    Object that represents a new order message.
     """
 
     def __init__(self,
@@ -48,8 +48,10 @@ class NewOrderMessage(ProtoObject):
         self.proto.timeinforce = time_in_force.value
 
     def to_dict(self):
+        # call base method
         dict = super(NewOrderMessage, self).to_dict()
 
+        # override JSON translation to handle corner case for sender
         dict["sender"] = self.sender_address
 
         return dict
