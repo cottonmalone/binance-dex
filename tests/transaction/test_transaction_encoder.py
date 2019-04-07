@@ -1,5 +1,5 @@
+from binance import *
 from binance.crypto import *
-from binance.environment import *
 from binance.message import *
 from binance.transaction import *
 
@@ -24,7 +24,7 @@ def create_test_wallet_1(sequence):
     )
 
     # get wallet
-    wallet = Wallet(private_key, TEST_NET)
+    wallet = Wallet(private_key, BinanceNetwork.TEST)
 
     # mock waller info
     wallet.account_number = 0
@@ -49,7 +49,7 @@ def create_test_wallet_2(sequence):
     )
 
     # get wallet
-    wallet = Wallet(private_key, TEST_NET)
+    wallet = Wallet(private_key, BinanceNetwork.TEST)
 
     # mock waller info
     wallet.account_number = 0

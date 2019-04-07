@@ -3,17 +3,17 @@ from .keys import *
 
 class Wallet(object):
 
-    def __init__(self, private_key, environment):
+    def __init__(self, private_key, network):
         self.private_key = get_private_key_from_hex(private_key)
 
-        self.environment = environment
+        self.network = network.value
 
         self.public_key = binascii.unhexlify(
             "eb5ae98721" + get_public_key_from_private_key(private_key)
         )
 
         self.address = get_address_from_private_key(private_key,
-                                                    environment.hrp)
+                                                    self.network.hrp)
 
         self.account_number = None
         self.sequence = None

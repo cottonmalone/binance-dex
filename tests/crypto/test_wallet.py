@@ -1,6 +1,6 @@
 import binascii
+from binance import *
 from binance.crypto import *
-from binance.environment import TEST_NET
 
 
 def test_wallet():
@@ -8,7 +8,7 @@ def test_wallet():
     address = "tbnb1grpf0955h0ykzq3ar5nmum7y6gdfl6lx8xu7hm"
     public_key = b"eb5ae98721026a35920088d98c3888ca68c53dfc93f4564602606cbb87f0fe5ee533db38e502"
 
-    wallet = Wallet(private_key, environment=TEST_NET)
+    wallet = Wallet(private_key, network=BinanceNetwork.TEST)
 
     assert wallet.address == address
 
