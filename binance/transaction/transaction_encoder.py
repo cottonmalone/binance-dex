@@ -31,8 +31,6 @@ class TransactionEncoder(object):
                                                  source=self.source,
                                                  data=self.data)
 
-        print(binance.crypto.get_json_bytes_for_sign_data(sign_data).decode())
-
         # sign encoded JSON to bytes
         return binance.crypto.generate_signature_for_message(
             self.wallet.private_key,

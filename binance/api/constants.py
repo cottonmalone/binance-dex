@@ -62,6 +62,3 @@ class TransactionType(Enum):
     VOTE = "VOTE"
     MINT = "MINT"
     DEPOSIT = "DEPOSIT"
-
-
-
