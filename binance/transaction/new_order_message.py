@@ -46,15 +46,10 @@ class NewOrderMessage(ProtoObject):
         self.proto.price = price
         self.proto.quantity = quantity
         self.proto.timeinforce = time_in_force
-        self.proto.msgType: "NewOrderMsg"
 
     def to_dict(self):
         dict = super(NewOrderMessage, self).to_dict()
 
         dict["sender"] = self.sender_address
-
-
-
-
 
         return dict

@@ -14,15 +14,6 @@ SignData = collections.namedtuple("SignData", [
 ])
 
 
-def get_json_for_messages(msgs):
-    json_string = [msg_to_dict(msg, preserving_proto_field_name=True)
-                   for msg in msgs]
-
-    return json.dumps(json_string,
-                      sort_keys=True,
-                      separators=(',', ':'))
-
-
 def get_data_from_messages(msgs):
     return [msg.to_dict()
             for msg in msgs]
@@ -40,5 +31,5 @@ def get_sign_data(wallet, msgs, memo, source, data):
 
 def get_json_bytes_for_sign_data(sign_data):
     return json.dumps(sign_data._asdict(),
-                                       sort_keys=True,
-                                       separators=(',', ':')).encode()
+                      sort_keys=True,
+                      separators=(',', ':')).encode()
