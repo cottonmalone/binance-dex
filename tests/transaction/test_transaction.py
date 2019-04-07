@@ -33,11 +33,11 @@ def test_new_order_message():
         sender="bnc1hgm0p7khfk85zpz5v0j8wnej3a90w7098fpxyh",
         id="B6561DCC104130059A7C08F48C64610C1F6F9064-11",
         symbol="BTC-5C4_BNB",
-        order_type=2,
-        side=1,
+        order_type=OrderType.LIMIT,
+        order_side=OrderSide.BUY,
         price=100000000,
         quantity=1200000000,
-        time_in_force=1
+        time_in_force=TimeInForce.GTE
     )
     # override sender with correct one
     message.proto.sender = binascii.unhexlify(sender)

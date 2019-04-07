@@ -61,13 +61,13 @@ class TransactionEncoder(object):
         Create New Order Message from parameters.
 
         Args:
-            symbol (str): Symbol for trading pair in full name of the tokens
-            order_type (OrderType): The order type
+            symbol (str): Symbol for trading pair in full name of the tokens.
+            order_type (OrderType): The order type.
             order_side (OrderSide): The order side.
             price (int): Price of the order, which is the real price
-                multiplied by 1e8 (10^8) and rounded to integer
+                multiplied by 1e8 (10^8) and rounded to integer.
             quantity (int): Quantity of the order, which is the real price
-                multiplied by 1e8 (10^8) and rounded to integer
+                multiplied by 1e8 (10^8) and rounded to integer.
             time_in_force (TimeInForce): The time in force.
 
         Returns:
@@ -84,9 +84,9 @@ class TransactionEncoder(object):
             id=order_id,
             sender=self.wallet.address,
             symbol=symbol,
-            order_type=order_type.value,
-            side=order_side.value,
+            order_type=order_type,
+            order_side=order_side,
             price=price,
             quantity=quantity,
-            time_in_force=time_in_force.value
+            time_in_force=time_in_force
         )

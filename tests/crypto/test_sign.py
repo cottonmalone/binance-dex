@@ -31,11 +31,11 @@ def test_get_json_bytes_for_sign_data():
         sender="bnc1hgm0p7khfk85zpz5v0j8wnej3a90w7098fpxyh",
         id="BA36F0FAD74D8F41045463E4774F328F4AF779E5-36",
         symbol="NNB-338_BNB",
-        order_type=2,
-        side=1,
+        order_type=OrderType.LIMIT,
+        order_side=OrderSide.BUY,
         price=136350000,
         quantity=100000000,
-        time_in_force=1)
+        time_in_force=TimeInForce.GTE)
 
     # get sign data with message
     sign_data = SignData(chain_id='chain-bnb',

@@ -1,7 +1,7 @@
 from binance.crypto import *
-from binance.transaction import *
 from binance.environment import *
-from binance.model import *
+from binance.message import *
+from binance.transaction import *
 
 MNEMONIC_PHRASE = "slot live best metal mandate page hover tank bronze code " \
                   "salad hill hen salad train inmate autumn nut home city " \
@@ -74,4 +74,3 @@ def test_create_new_order_message():
     transaction = encoder.create_transaction(message, signature)
 
     assert binascii.hexlify(transaction.encode()) == encoded_transaction
-

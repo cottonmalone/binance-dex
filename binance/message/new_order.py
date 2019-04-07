@@ -12,7 +12,7 @@ class NewOrderMessage(ProtoObject):
                  sender,
                  symbol,
                  order_type,
-                 side,
+                 order_side,
                  price,
                  quantity,
                  time_in_force):
@@ -21,15 +21,15 @@ class NewOrderMessage(ProtoObject):
         Args:
             id (str): The order ID.
             sender (str): The originating address.
-            symbol (str): Symbol for trading pair in full name of the tokens
-            order_type (int): Only accept 2 for now, meaning limit order.
-            side (int): 1 for buy and 2 fory sell
+            symbol (str): Symbol for trading pair in full name of the tokens.
+            order_type (OrderType): The order type.
+            order_side (OrderSide): The order side.
             price (int): Price of the order, which is the real price
-                multiplied by 1e8 (10^8) and rounded to integer
+                multiplied by 1e8 (10^8) and rounded to integer.
             quantity (int): Quantity of the order, which is the real price
-                multiplied by 1e8 (10^8) and rounded to integer
-            time_in_force (int): 1 for Good Till Expire(GTE) order and 3 for
-                Immediate Or Cancel (IOC)
+                multiplied by 1e8 (10^8) and rounded to integer.
+            time_in_force (TimeInForce): The time in force.
+
         """
         super(NewOrderMessage, self).__init__(
             NewOrder,
@@ -41,11 +41,11 @@ class NewOrderMessage(ProtoObject):
         self.proto.sender = binance.crypto.get_sender_address_in_bytes(
             sender)
         self.proto.symbol = symbol
-        self.proto.ordertype = order_type
-        self.proto.side = side
+        self.proto.ordertype = order_type.value
+        self.proto.side = order_side.value
         self.proto.price = price
         self.proto.quantity = quantity
-        self.proto.timeinforce = time_in_force
+        self.proto.timeinforce = time_in_force.value
 
     def to_dict(self):
         dict = super(NewOrderMessage, self).to_dict()
