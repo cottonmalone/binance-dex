@@ -2,7 +2,7 @@ coverage==4.5.3
 pytest==4.4.0
 pytest-mock==1.10.3
 requests==2.21.0
-urllib3==1.24.1
+urllib3==1.26.5
 bitcoin==1.1.42
 ecdsa==0.13
 protobuf==3.7.1
