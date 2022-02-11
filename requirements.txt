@@ -5,6 +5,6 @@ requests==2.21.0
 urllib3==1.24.1
 bitcoin==1.1.42
 ecdsa==0.13
-protobuf==3.7.1
+protobuf==3.15.0
 cryptos==1.36
 py-kim==1.2.1
